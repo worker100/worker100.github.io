@@ -1,0 +1,377 @@
+/* AI探索者个人网站 - 主样式文件 */
+/* 与TailwindCSS配合使用的自定义样式 */
+
+/* CSS变量定义 */
+:root {
+  --primary-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  --secondary-gradient: linear-gradient(135deg, #2563eb, #7c3aed);
+  --particle-color: #3b82f6;
+  --wave-color: #3b82f6;
+}
+
+/* 深色模式变量 */
+.dark {
+  --particle-color: #60a5fa;
+  --wave-color: #60a5fa;
+}
+
+/* 平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1f1f1f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #5a5a5a;
+}
+
+/* 加载动画 */
+#loading-screen {
+  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+#loading-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* 粒子背景效果 */
+#particles-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--particle-color);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: float-particle 6s ease-in-out infinite;
+}
+
+@keyframes float-particle {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+    opacity: 1;
+  }
+}
+
+/* 导航栏效果 */
+.nav-link {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::before {
+  width: 100%;
+}
+
+/* 移动端导航菜单动画 */
+#mobile-menu {
+  transition: all 0.3s ease-in-out;
+  max-height: 0;
+  overflow: hidden;
+}
+
+#mobile-menu.show {
+  max-height: 300px;
+}
+
+/* Hero区域特效 */
+.hero-gradient-text {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 项目卡片悬停效果 */
+.project-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.dark .project-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* 博客卡片悬停效果 */
+.blog-card {
+  transition: all 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.dark .blog-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* 社交图标效果 */
+.social-icon {
+  position: relative;
+  overflow: hidden;
+}
+
+.social-icon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+  transition: all 0.3s ease;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.social-icon:hover::before {
+  width: 100px;
+  height: 100px;
+}
+
+/* 技能进度条动画 */
+.skill-bar {
+  transition: width 1s ease-in-out;
+}
+
+/* 联系表单波纹背景 */
+.wave-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+  animation: wave-move 8s ease-in-out infinite;
+}
+
+@keyframes wave-move {
+  0%, 100% {
+    transform: translateX(-100%) translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(100%) translateY(-50px) rotate(180deg);
+  }
+}
+
+/* 表单输入框效果 */
+input:focus, textarea:focus {
+  transform: scale(1.02);
+}
+
+/* 按钮悬停发光效果 */
+.animate-glow:hover {
+  animation: glow-pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow-pulse {
+  0% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.4);
+  }
+}
+
+/* 模态框动画 */
+.modal-enter {
+  animation: modal-fade-in 0.3s ease-out forwards;
+}
+
+.modal-exit {
+  animation: modal-fade-out 0.3s ease-in forwards;
+}
+
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modal-fade-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+/* 头像旋转效果 */
+.hover\:rotate-360:hover {
+  transform: rotate(360deg);
+}
+
+/* 响应式网格优化 */
+@media (max-width: 768px) {
+  .hero-gradient-text {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+  
+  .particle {
+    display: none; /* 移动端隐藏粒子效果以提升性能 */
+  }
+  
+  .wave-animation {
+    animation-duration: 6s; /* 移动端加快动画速度 */
+  }
+}
+
+/* 文本截断 */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 滚动淡入动画 */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.6s ease-out;
+}
+
+.fade-in-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-in-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.6s ease-out;
+}
+
+.fade-in-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 打字机效果 */
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0.1em;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: currentColor; }
+}
+
+/* 高性能动画优化 */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* 深色模式过渡 */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 辅助功能优化 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .particle {
+    display: none;
+  }
+  
+  .wave-animation {
+    display: none;
+  }
+}
