@@ -351,6 +351,419 @@ const FormManager = {
   }
 };
 
+// 小游戏管理
+const GameManager = {
+  init() {
+    this.initGuessGame();
+    this.initRPSGame();
+    this.initPuzzleGame();
+  },
+
+  // 猜数字游戏
+  initGuessGame() {
+    let targetNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+    
+    const input = document.getElementById('guess-input');
+    const button = document.getElementById('guess-btn');
+    const result = document.getElementById('guess-result');
+    const attemptsDisplay = document.getElementById('guess-attempts');
+    
+    const resetGame = () => {
+      targetNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      result.textContent = '';
+      attemptsDisplay.textContent = '';
+      input.value = '';
+      input.disabled = false;
+      button.textContent = '猜一猜！';
+      button.disabled = false;
+    };
+    
+    const makeGuess = () => {
+      const guess = parseInt(input.value);
+      if (!guess || guess < 1 || guess > 100) {
+        result.textContent = '请输入1-100之间的数字！';
+        result.className = 'text-center text-sm font-medium text-red-500';
+        return;
+      }
+      
+      attempts++;
+      
+      if (guess === targetNumber) {
+        result.textContent = `🎉 恭喜你猜对了！数字就是 ${targetNumber}`;
+        result.className = 'text-center text-sm font-medium text-green-500';
+        attemptsDisplay.textContent = `你用了 ${attempts} 次就猜中了！`;
+        button.textContent = '再来一局';
+        button.onclick = resetGame;
+      } else if (guess < targetNumber) {
+        result.textContent = '📈 太小了，再大一点！';
+        result.className = 'text-center text-sm font-medium text-blue-500';
+        attemptsDisplay.textContent = `已尝试 ${attempts} 次`;
+      } else {
+        result.textContent = '📉 太大了，再小一点！';
+        result.className = 'text-center text-sm font-medium text-orange-500';
+        attemptsDisplay.textContent = `已尝试 ${attempts} 次`;
+      }
+      
+      input.value = '';
+    };
+    
+    button?.addEventListener('click', makeGuess);
+    input?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') makeGuess();
+    });
+  },
+
+  // 石头剪刀布游戏
+  initRPSGame() {
+    const choices = ['rock', 'paper', 'scissors'];
+    const emojis = { rock: '🪨', paper: '📄', scissors: '✂️' };
+    const names = { rock: '石头', paper: '布', scissors: '剪刀' };
+    
+    let playerScore = 0;
+    let aiScore = 0;
+    
+    const buttons = document.querySelectorAll('.rps-btn');
+    const result = document.getElementById('rps-result');
+    const score = document.getElementById('rps-score');
+    
+    const getWinner = (player, ai) => {
+      if (player === ai) return 'tie';
+      if (
+        (player === 'rock' && ai === 'scissors') ||
+        (player === 'paper' && ai === 'rock') ||
+        (player === 'scissors' && ai === 'paper')
+      ) {
+        return 'player';
+      }
+      return 'ai';
+    };
+    
+    const updateScore = () => {
+      score.textContent = `你: ${playerScore} | AI: ${aiScore}`;
+    };
+    
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const playerChoice = button.dataset.choice;
+        const aiChoice = choices[Math.floor(Math.random() * choices.length)];
+        const winner = getWinner(playerChoice, aiChoice);
+        
+        // 添加点击动画
+        button.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          button.style.transform = 'scale(1)';
+        }, 150);
+        
+        let resultText = `你: ${emojis[playerChoice]} ${names[playerChoice]} | AI: ${emojis[aiChoice]} ${names[aiChoice]}<br/>`;
+        
+        if (winner === 'player') {
+          playerScore++;
+          resultText += '<span class="text-green-500 font-bold">🎉 你赢了！</span>';
+        } else if (winner === 'ai') {
+          aiScore++;
+          resultText += '<span class="text-red-500 font-bold">😅 AI赢了！</span>';
+        } else {
+          resultText += '<span class="text-yellow-500 font-bold">🤝 平局！</span>';
+        }
+        
+        result.innerHTML = resultText;
+        updateScore();
+      });
+    });
+  },
+
+  // 数字拼图游戏
+  initPuzzleGame() {
+    const grid = document.getElementById('puzzle-grid');
+    const shuffleBtn = document.getElementById('puzzle-shuffle');
+    const resetBtn = document.getElementById('puzzle-reset');
+    const movesDisplay = document.getElementById('puzzle-moves');
+    
+    let tiles = [];
+    let moves = 0;
+    
+    const createTiles = () => {
+      grid.innerHTML = '';
+      tiles = [];
+      
+      // 创建1-8的数字和一个空格
+      for (let i = 1; i <= 9; i++) {
+        const tile = document.createElement('div');
+        tile.className = 'puzzle-tile flex items-center justify-center bg-light-primary dark:bg-dark-primary rounded text-lg font-bold cursor-pointer transition-all duration-300 hover:bg-accent-blue hover:text-white';
+        
+        if (i === 9) {
+          tile.textContent = '';
+          tile.className += ' opacity-0 pointer-events-none';
+          tile.dataset.value = '0';
+        } else {
+          tile.textContent = i;
+          tile.dataset.value = i.toString();
+        }
+        
+        tile.addEventListener('click', () => moveTile(i - 1));
+        grid.appendChild(tile);
+        tiles.push(tile);
+      }
+    };
+    
+    const moveTile = (index) => {
+      const emptyIndex = tiles.findIndex(tile => tile.dataset.value === '0');
+      const validMoves = getValidMoves(emptyIndex);
+      
+      if (validMoves.includes(index)) {
+        // 交换瓷砖
+        const temp = tiles[index].dataset.value;
+        const tempText = tiles[index].textContent;
+        const tempClass = tiles[index].className;
+        
+        tiles[index].dataset.value = tiles[emptyIndex].dataset.value;
+        tiles[index].textContent = tiles[emptyIndex].textContent;
+        tiles[index].className = tiles[emptyIndex].className;
+        
+        tiles[emptyIndex].dataset.value = temp;
+        tiles[emptyIndex].textContent = tempText;
+        tiles[emptyIndex].className = tempClass;
+        
+        moves++;
+        movesDisplay.textContent = `步数: ${moves}`;
+        
+        if (checkWin()) {
+          setTimeout(() => {
+            alert('🎉 恭喜你完成了拼图！');
+          }, 300);
+        }
+      }
+    };
+    
+    const getValidMoves = (emptyIndex) => {
+      const validMoves = [];
+      const row = Math.floor(emptyIndex / 3);
+      const col = emptyIndex % 3;
+      
+      // 上
+      if (row > 0) validMoves.push(emptyIndex - 3);
+      // 下
+      if (row < 2) validMoves.push(emptyIndex + 3);
+      // 左
+      if (col > 0) validMoves.push(emptyIndex - 1);
+      // 右
+      if (col < 2) validMoves.push(emptyIndex + 1);
+      
+      return validMoves;
+    };
+    
+    const checkWin = () => {
+      for (let i = 0; i < 8; i++) {
+        if (tiles[i].dataset.value !== (i + 1).toString()) {
+          return false;
+        }
+      }
+      return tiles[8].dataset.value === '0';
+    };
+    
+    const shuffle = () => {
+      // 简单的随机交换方法
+      for (let i = 0; i < 100; i++) {
+        const emptyIndex = tiles.findIndex(tile => tile.dataset.value === '0');
+        const validMoves = getValidMoves(emptyIndex);
+        const randomMove = validMoves[Math.floor(Math.random() * validMoves.length)];
+        moveTile(randomMove);
+      }
+      moves = 0;
+      movesDisplay.textContent = `步数: ${moves}`;
+    };
+    
+    const reset = () => {
+      createTiles();
+      moves = 0;
+      movesDisplay.textContent = `步数: ${moves}`;
+    };
+    
+    shuffleBtn?.addEventListener('click', shuffle);
+    resetBtn?.addEventListener('click', reset);
+    
+    // 初始化
+    createTiles();
+  }
+};
+
+// 留言板管理
+const GuestbookManager = {
+  messages: [],
+  
+  init() {
+    this.bindForm();
+    this.bindInteractions();
+  },
+  
+  bindForm() {
+    const form = document.getElementById('guestbook-form');
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('guest-name').value.trim();
+      const email = document.getElementById('guest-email').value.trim();
+      const message = document.getElementById('guest-message').value.trim();
+      
+      if (!name || !message) {
+        this.showNotification('请填写昵称和留言内容！', 'error');
+        return;
+      }
+      
+      this.addMessage({ name, email, message });
+      form.reset();
+      this.showNotification('留言发表成功！感谢您的分享 🎉', 'success');
+    });
+  },
+  
+  addMessage({ name, email, message }) {
+    const now = new Date();
+    const timeStr = now.toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    const newMessage = {
+      id: Date.now(),
+      name,
+      email,
+      message,
+      time: timeStr,
+      likes: 0
+    };
+    
+    this.messages.unshift(newMessage);
+    this.renderMessage(newMessage, true);
+    this.updateMessageCount();
+  },
+  
+  renderMessage(messageData, isNew = false) {
+    const container = document.getElementById('messages-container');
+    const messageEl = document.createElement('div');
+    
+    const avatar = messageData.name.charAt(0).toUpperCase();
+    const colors = [
+      'from-blue-400 to-purple-500',
+      'from-green-400 to-blue-500',
+      'from-purple-400 to-pink-500',
+      'from-yellow-400 to-red-500',
+      'from-indigo-400 to-purple-500'
+    ];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    
+    messageEl.className = 'message-item bg-light-primary dark:bg-dark-primary rounded-2xl p-6 shadow-lg transform hover:-translate-y-1 transition-all duration-300';
+    if (isNew) {
+      messageEl.className += ' opacity-0 -translate-y-4';
+    }
+    
+    messageEl.innerHTML = `
+      <div class="flex items-start space-x-4">
+        <div class="flex-shrink-0">
+          <div class="w-12 h-12 bg-gradient-to-r ${randomColor} rounded-full flex items-center justify-center text-white font-bold text-lg">
+            ${avatar}
+          </div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="text-lg font-semibold text-light-text dark:text-dark-text">${messageData.name}</h4>
+            <span class="text-sm text-light-text-secondary dark:text-dark-text-secondary">${messageData.time}</span>
+          </div>
+          <p class="text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
+            ${messageData.message}
+          </p>
+          <div class="flex items-center space-x-4 mt-4">
+            <button class="like-btn flex items-center text-light-text-secondary dark:text-dark-text-secondary hover:text-red-500 transition-colors duration-300" data-id="${messageData.id}">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+              </svg>
+              <span class="like-count">${messageData.likes}</span>
+            </button>
+            <button class="reply-btn text-light-text-secondary dark:text-dark-text-secondary hover:text-accent-blue transition-colors duration-300">
+              <svg class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+              </svg>
+              回复
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    if (isNew) {
+      container.insertBefore(messageEl, container.firstChild);
+      // 触发动画
+      setTimeout(() => {
+        messageEl.classList.remove('opacity-0', '-translate-y-4');
+      }, 100);
+    } else {
+      container.appendChild(messageEl);
+    }
+  },
+  
+  bindInteractions() {
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.like-btn')) {
+        const btn = e.target.closest('.like-btn');
+        const messageId = parseInt(btn.dataset.id);
+        const likeCount = btn.querySelector('.like-count');
+        
+        // 增加点赞数
+        const currentLikes = parseInt(likeCount.textContent);
+        likeCount.textContent = currentLikes + 1;
+        
+        // 添加点赞动画
+        btn.style.transform = 'scale(1.2)';
+        btn.style.color = '#ef4444';
+        setTimeout(() => {
+          btn.style.transform = 'scale(1)';
+        }, 200);
+        
+        this.showNotification('👍 点赞成功！', 'success');
+      }
+      
+      if (e.target.closest('.reply-btn')) {
+        this.showNotification('💬 回复功能开发中，敬请期待！', 'info');
+      }
+    });
+  },
+  
+  updateMessageCount() {
+    const countEl = document.getElementById('message-count');
+    const totalMessages = this.messages.length + 3; // 包括示例留言
+    countEl.textContent = `(${totalMessages})`;
+  },
+  
+  showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    const bgColors = {
+      success: 'bg-green-500',
+      error: 'bg-red-500',
+      info: 'bg-blue-500'
+    };
+    
+    notification.className = `fixed top-4 right-4 z-50 ${bgColors[type]} text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    setTimeout(() => {
+      notification.classList.add('translate-x-full');
+      setTimeout(() => {
+        document.body.removeChild(notification);
+      }, 300);
+    }, 3000);
+  }
+};
+
 // 主应用初始化
 class AIExplorerApp {
   init() {
@@ -371,6 +784,8 @@ class AIExplorerApp {
       ScrollAnimationManager.init();
       ModalManager.init();
       FormManager.init();
+      GameManager.init();
+      GuestbookManager.init();
       
       // 延迟初始化粒子效果
       setTimeout(() => {

@@ -359,6 +359,93 @@ input:focus, textarea:focus {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
+/* 游戏卡片效果 */
+.game-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.game-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.dark .game-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* 拼图瓷砖样式 */
+.puzzle-tile {
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.puzzle-tile:not(.opacity-0):hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+/* 留言卡片动画 */
+.message-item {
+  transition: all 0.3s ease;
+}
+
+.message-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.dark .message-item:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* 按钮点击动画 */
+.rps-btn:active {
+  transform: scale(0.95);
+}
+
+.like-btn:active {
+  transform: scale(1.1);
+}
+
+/* 游戏结果动画 */
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.game-result-animate {
+  animation: bounce-in 0.5s ease-out;
+}
+
+/* 通知动画优化 */
+.notification-slide-in {
+  animation: slide-in-right 0.3s ease-out;
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 /* 辅助功能优化 */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -373,5 +460,9 @@ input:focus, textarea:focus {
   
   .wave-animation {
     display: none;
+  }
+  
+  .game-result-animate {
+    animation: none;
   }
 }
