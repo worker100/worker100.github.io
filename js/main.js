@@ -4,7 +4,9 @@
 const CONFIG = {
   LOADING_DURATION: 2000,
   PARTICLE_COUNT: 50,
-  THEME_STORAGE_KEY: 'ai-explorer-theme'
+  THEME_STORAGE_KEY: 'ai-explorer-theme',
+  CACHE_VERSION: '1.0.0',
+  PERFORMANCE_MONITORING: true
 };
 
 // 主题管理
@@ -55,15 +57,14 @@ const ThemeManager = {
 const LoadingManager = {
   init() {
     const loadingScreen = document.getElementById('loading-screen');
-    
-    setTimeout(() => {
-      if (loadingScreen) {
-        loadingScreen.classList.add('fade-out');
+    if (loadingScreen) {
+      setTimeout(() => {
+        loadingScreen.style.opacity = '0';
         setTimeout(() => {
           loadingScreen.style.display = 'none';
         }, 500);
-      }
-    }, CONFIG.LOADING_DURATION);
+      }, CONFIG.LOADING_DURATION);
+    }
   }
 };
 
@@ -72,6 +73,7 @@ const NavigationManager = {
   init() {
     this.bindMobileMenu();
     this.bindSmoothScroll();
+    this.setupMobileOptimizations();
   },
 
   bindMobileMenu() {
@@ -105,6 +107,25 @@ const NavigationManager = {
         }
       });
     });
+  },
+
+  setupMobileOptimizations() {
+    // 检测移动设备
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      document.body.classList.add('mobile-device');
+      
+      // 防止iOS双击缩放
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', (event) => {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+          event.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, false);
+    }
   }
 };
 
@@ -167,6 +188,7 @@ const ScrollAnimationManager = {
   init() {
     this.setupIntersectionObserver();
     this.setupSkillBars();
+    this.setupCounters();
   },
 
   setupIntersectionObserver() {
@@ -188,15 +210,55 @@ const ScrollAnimationManager = {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const bar = entry.target;
-          const width = bar.getAttribute('data-width');
+          const progress = bar.getAttribute('data-progress') || '0%';
+          const progressBar = bar.querySelector('.skill-progress');
           setTimeout(() => {
-            bar.style.width = width + '%';
+            progressBar.style.width = progress;
           }, 200);
         }
       });
     }, { threshold: 0.5 });
 
     skillBars.forEach(bar => skillObserver.observe(bar));
+  },
+
+  setupCounters() {
+    const counters = document.querySelectorAll('.counter');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const counter = entry.target;
+          const target = parseInt(counter.dataset.target) || 0;
+          this.animateCounter(counter, 0, target, 2000);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    counters.forEach(counter => counterObserver.observe(counter));
+  },
+
+  animateCounter(element, start, end, duration) {
+    const range = end - start;
+    const minTimer = 50;
+    const stepTime = Math.abs(Math.floor(duration / range));
+    const timer = stepTime < minTimer ? minTimer : stepTime;
+    
+    const startTime = new Date().getTime();
+    const endTime = startTime + duration;
+    
+    const run = () => {
+      const now = new Date().getTime();
+      const remaining = Math.max((endTime - now) / duration, 0);
+      const value = Math.round(end - (remaining * range));
+      
+      element.textContent = value;
+      
+      if (value !== end) {
+        setTimeout(run, timer);
+      }
+    };
+    
+    run();
   }
 };
 
@@ -269,6 +331,7 @@ const FormManager = {
   init() {
     this.bindContactForm();
     this.bindSubscribeForm();
+    this.bindGuestbookForm();
     this.setupValidation();
   },
 
@@ -300,6 +363,96 @@ const FormManager = {
     });
   },
 
+  bindGuestbookForm() {
+    const guestbookForm = document.getElementById('guestbook-form');
+    guestbookForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('guest-name').value.trim();
+      const email = document.getElementById('guest-email').value.trim();
+      const message = document.getElementById('guest-message').value.trim();
+      
+      if (!name || !message) {
+        this.showNotification('请填写昵称和留言内容！', 'error');
+        return;
+      }
+      
+      this.addGuestMessage({ name, email, message });
+      guestbookForm.reset();
+      this.showNotification('留言发表成功！感谢您的分享 🎉', 'success');
+    });
+  },
+
+  addGuestMessage({ name, email, message }) {
+    const now = new Date();
+    const timeStr = now.toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    const container = document.getElementById('messages-container');
+    const messageEl = document.createElement('div');
+    
+    const avatar = name.charAt(0).toUpperCase();
+    const colors = [
+      'from-blue-400 to-purple-500',
+      'from-green-400 to-blue-500',
+      'from-purple-400 to-pink-500',
+      'from-yellow-400 to-red-500'
+    ];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    
+    messageEl.className = 'message-item bg-light-primary dark:bg-dark-primary rounded-2xl p-6 shadow-lg transform hover:-translate-y-1 transition-all duration-300 opacity-0 -translate-y-4';
+    
+    messageEl.innerHTML = `
+      <div class="flex items-start space-x-4">
+        <div class="flex-shrink-0">
+          <div class="w-12 h-12 bg-gradient-to-r ${randomColor} rounded-full flex items-center justify-center text-white font-bold text-lg">
+            ${avatar}
+          </div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="text-lg font-semibold text-light-text dark:text-dark-text">${name}</h4>
+            <span class="text-sm text-light-text-secondary dark:text-dark-text-secondary">${timeStr}</span>
+          </div>
+          <p class="text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
+            ${message}
+          </p>
+          <div class="flex items-center space-x-4 mt-4">
+            <button class="like-btn flex items-center text-light-text-secondary dark:text-dark-text-secondary hover:text-red-500 transition-colors duration-300">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+              </svg>
+              <span class="like-count">0</span>
+            </button>
+            <button class="reply-btn text-light-text-secondary dark:text-dark-text-secondary hover:text-accent-blue transition-colors duration-300">
+              <svg class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+              </svg>
+              回复
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    container.insertBefore(messageEl, container.firstChild);
+    
+    // 触发动画
+    setTimeout(() => {
+      messageEl.classList.remove('opacity-0', '-translate-y-4');
+    }, 100);
+    
+    // 更新留言数量
+    const countEl = document.getElementById('message-count');
+    const currentCount = parseInt(countEl.textContent.match(/\d+/)[0]);
+    countEl.textContent = `(${currentCount + 1})`;
+  },
+
   showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
@@ -316,7 +469,9 @@ const FormManager = {
     setTimeout(() => {
       notification.classList.add('translate-x-full');
       setTimeout(() => {
-        document.body.removeChild(notification);
+        if (document.body.contains(notification)) {
+          document.body.removeChild(notification);
+        }
       }, 300);
     }, 3000);
   },
@@ -357,6 +512,7 @@ const GameManager = {
     this.initGuessGame();
     this.initRPSGame();
     this.initPuzzleGame();
+    this.bindLikeButtons();
   },
 
   // 猜数字游戏
@@ -378,6 +534,7 @@ const GameManager = {
       input.disabled = false;
       button.textContent = '猜一猜！';
       button.disabled = false;
+      button.onclick = makeGuess;
     };
     
     const makeGuess = () => {
@@ -586,130 +743,12 @@ const GameManager = {
     
     // 初始化
     createTiles();
-  }
-};
+  },
 
-// 留言板管理
-const GuestbookManager = {
-  messages: [],
-  
-  init() {
-    this.bindForm();
-    this.bindInteractions();
-  },
-  
-  bindForm() {
-    const form = document.getElementById('guestbook-form');
-    form?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const name = document.getElementById('guest-name').value.trim();
-      const email = document.getElementById('guest-email').value.trim();
-      const message = document.getElementById('guest-message').value.trim();
-      
-      if (!name || !message) {
-        this.showNotification('请填写昵称和留言内容！', 'error');
-        return;
-      }
-      
-      this.addMessage({ name, email, message });
-      form.reset();
-      this.showNotification('留言发表成功！感谢您的分享 🎉', 'success');
-    });
-  },
-  
-  addMessage({ name, email, message }) {
-    const now = new Date();
-    const timeStr = now.toLocaleString('zh-CN', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-    
-    const newMessage = {
-      id: Date.now(),
-      name,
-      email,
-      message,
-      time: timeStr,
-      likes: 0
-    };
-    
-    this.messages.unshift(newMessage);
-    this.renderMessage(newMessage, true);
-    this.updateMessageCount();
-  },
-  
-  renderMessage(messageData, isNew = false) {
-    const container = document.getElementById('messages-container');
-    const messageEl = document.createElement('div');
-    
-    const avatar = messageData.name.charAt(0).toUpperCase();
-    const colors = [
-      'from-blue-400 to-purple-500',
-      'from-green-400 to-blue-500',
-      'from-purple-400 to-pink-500',
-      'from-yellow-400 to-red-500',
-      'from-indigo-400 to-purple-500'
-    ];
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    
-    messageEl.className = 'message-item bg-light-primary dark:bg-dark-primary rounded-2xl p-6 shadow-lg transform hover:-translate-y-1 transition-all duration-300';
-    if (isNew) {
-      messageEl.className += ' opacity-0 -translate-y-4';
-    }
-    
-    messageEl.innerHTML = `
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0">
-          <div class="w-12 h-12 bg-gradient-to-r ${randomColor} rounded-full flex items-center justify-center text-white font-bold text-lg">
-            ${avatar}
-          </div>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center justify-between mb-2">
-            <h4 class="text-lg font-semibold text-light-text dark:text-dark-text">${messageData.name}</h4>
-            <span class="text-sm text-light-text-secondary dark:text-dark-text-secondary">${messageData.time}</span>
-          </div>
-          <p class="text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
-            ${messageData.message}
-          </p>
-          <div class="flex items-center space-x-4 mt-4">
-            <button class="like-btn flex items-center text-light-text-secondary dark:text-dark-text-secondary hover:text-red-500 transition-colors duration-300" data-id="${messageData.id}">
-              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-              </svg>
-              <span class="like-count">${messageData.likes}</span>
-            </button>
-            <button class="reply-btn text-light-text-secondary dark:text-dark-text-secondary hover:text-accent-blue transition-colors duration-300">
-              <svg class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
-              </svg>
-              回复
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-    
-    if (isNew) {
-      container.insertBefore(messageEl, container.firstChild);
-      // 触发动画
-      setTimeout(() => {
-        messageEl.classList.remove('opacity-0', '-translate-y-4');
-      }, 100);
-    } else {
-      container.appendChild(messageEl);
-    }
-  },
-  
-  bindInteractions() {
+  bindLikeButtons() {
     document.addEventListener('click', (e) => {
       if (e.target.closest('.like-btn')) {
         const btn = e.target.closest('.like-btn');
-        const messageId = parseInt(btn.dataset.id);
         const likeCount = btn.querySelector('.like-count');
         
         // 增加点赞数
@@ -723,44 +762,13 @@ const GuestbookManager = {
           btn.style.transform = 'scale(1)';
         }, 200);
         
-        this.showNotification('👍 点赞成功！', 'success');
+        FormManager.showNotification('👍 点赞成功！', 'success');
       }
       
       if (e.target.closest('.reply-btn')) {
-        this.showNotification('💬 回复功能开发中，敬请期待！', 'info');
+        FormManager.showNotification('💬 回复功能开发中，敬请期待！', 'success');
       }
     });
-  },
-  
-  updateMessageCount() {
-    const countEl = document.getElementById('message-count');
-    const totalMessages = this.messages.length + 3; // 包括示例留言
-    countEl.textContent = `(${totalMessages})`;
-  },
-  
-  showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    const bgColors = {
-      success: 'bg-green-500',
-      error: 'bg-red-500',
-      info: 'bg-blue-500'
-    };
-    
-    notification.className = `fixed top-4 right-4 z-50 ${bgColors[type]} text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-      notification.classList.remove('translate-x-full');
-    }, 100);
-    
-    setTimeout(() => {
-      notification.classList.add('translate-x-full');
-      setTimeout(() => {
-        document.body.removeChild(notification);
-      }, 300);
-    }, 3000);
   }
 };
 
@@ -785,7 +793,6 @@ class AIExplorerApp {
       ModalManager.init();
       FormManager.init();
       GameManager.init();
-      GuestbookManager.init();
       
       // 延迟初始化粒子效果
       setTimeout(() => {

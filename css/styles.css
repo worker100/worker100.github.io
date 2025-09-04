@@ -269,19 +269,160 @@ input:focus, textarea:focus {
   transform: rotate(360deg);
 }
 
-/* 响应式网格优化 */
+/* 移动端响应式优化 */
 @media (max-width: 768px) {
+  /* Hero区域优化 */
   .hero-gradient-text {
     font-size: 2.5rem;
     line-height: 1.2;
   }
   
+  /* 性能优化 */
   .particle {
     display: none; /* 移动端隐藏粒子效果以提升性能 */
   }
   
   .wave-animation {
     animation-duration: 6s; /* 移动端加快动画速度 */
+  }
+  
+  /* 导航优化 */
+  .nav-link {
+    padding: 1rem;
+    font-size: 1.125rem;
+  }
+  
+  /* 卡片间距优化 */
+  .project-card,
+  .blog-card,
+  .game-card {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* 表单优化 */
+  input,
+  textarea {
+    font-size: 16px; /* 防止iOS缩放 */
+    padding: 0.75rem;
+  }
+  
+  /* 按钮优化 */
+  button,
+  .btn {
+    min-height: 48px; /* 更大的触摸目标 */
+    min-width: 48px;
+    font-size: 1rem;
+  }
+  
+  /* 游戏按钮特殊优化 */
+  .rps-btn {
+    min-height: 60px;
+    min-width: 60px;
+    font-size: 2rem;
+  }
+  
+  /* 模态框优化 */
+  .modal-content {
+    margin: 1rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+/* 小屏幕优化 */
+@media (max-width: 480px) {
+  .hero-gradient-text {
+    font-size: 2rem;
+  }
+  
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* 技能条在小屏幕上的优化 */
+  .skill-item {
+    margin-bottom: 1rem;
+  }
+  
+  /* 社交图标优化 */
+  .social-icon {
+    width: 3rem;
+    height: 3rem;
+    margin: 0.25rem;
+  }
+  
+  /* 游戏网格优化 */
+  #puzzle-grid {
+    gap: 0.25rem;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  
+  .puzzle-tile {
+    font-size: 1.25rem;
+  }
+}
+
+/* 横屏优化 */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero-section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .hero-gradient-text {
+    font-size: 2rem;
+  }
+  
+  /* 减少垂直间距 */
+  .section-padding {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+
+/* 大屏幕优化 */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1200px;
+  }
+  
+  .hero-gradient-text {
+    font-size: 4rem;
+  }
+  
+  .project-card,
+  .blog-card {
+    transition-duration: 0.4s;
+  }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+  /* 移除悬停效果，使用点击效果 */
+  .project-card:hover,
+  .blog-card:hover,
+  .game-card:hover {
+    transform: none;
+    box-shadow: initial;
+  }
+  
+  .project-card:active,
+  .blog-card:active,
+  .game-card:active {
+    transform: scale(0.98);
+  }
+  
+  /* 优化按钮触摸反馈 */
+  button:active,
+  .btn:active {
+    transform: scale(0.95);
+  }
+  
+  /* 移除悬停的发光效果 */
+  .animate-glow:hover {
+    animation: none;
   }
 }
 
@@ -290,6 +431,7 @@ input:focus, textarea:focus {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  line-clamp: 3;
   overflow: hidden;
 }
 
@@ -446,6 +588,80 @@ input:focus, textarea:focus {
   }
 }
 
+/* 图片懒加载样式 */
+img.loading {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.3s ease;
+  background: linear-gradient(90deg, #f0f0f0, #e0e0e0, #f0f0f0);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.dark img.loading {
+  background: linear-gradient(90deg, #2a2a2a, #1a1a1a, #2a2a2a);
+  background-size: 200% 100%;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+img.loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+img.error {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+/* 性能优化类 */
+.performance-optimized {
+  contain: layout style paint;
+  will-change: auto;
+}
+
+.gpu-layer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* 缓存指示器 */
+.cached-content::after {
+  content: '⚡';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 12px;
+  opacity: 0.6;
+  z-index: 10;
+}
+
+/* 性能监控面板 */
+.performance-panel {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 11px;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.performance-panel.visible {
+  opacity: 1;
+}
+
 /* 辅助功能优化 */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -464,5 +680,353 @@ input:focus, textarea:focus {
   
   .game-result-animate {
     animation: none;
+  }
+  
+  img.loading {
+    animation: none;
+  }
+}
+
+/* 更完整的无障碍访问样式 */
+/* 屏幕阅读器专用内容 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 跳转链接样式 */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #3b82f6;
+  color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  border-radius: 0 0 4px 0;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* 键盘导航焦点样式增强 */
+.keyboard-navigation *:focus {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.keyboard-navigation *:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  .hero-section {
+    background: #000;
+    color: #fff;
+  }
+  
+  .card, .project-card, .blog-card, .game-card {
+    border: 2px solid #fff;
+    background: #000;
+    color: #fff;
+  }
+  
+  .btn, button {
+    border: 2px solid #fff;
+    background: #000;
+    color: #fff;
+  }
+  
+  .nav-link {
+    color: #fff;
+  }
+  
+  .text-gray-600 {
+    color: #ccc !important;
+  }
+}
+
+/* 确保足够的点击目标大小 */
+button,
+.btn,
+a,
+.rps-btn,
+.social-icon,
+.like-btn {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* 焦点陷阱样式 */
+.focus-trap-active {
+  position: relative;
+}
+
+/* 实时通知区域 */
+#live-region {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* 改进的模态框无障碍样式 */
+[role="dialog"] {
+  position: relative;
+}
+
+[role="dialog"]:focus {
+  outline: none;
+}
+
+/* 表单验证错误样式 */
+.form-error {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.form-error[aria-live] {
+  position: relative;
+}
+
+/* 改进的按钮状态 */
+button:disabled,
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* 改进的链接样式 */
+a:not(.btn):not(.social-icon):not(.nav-link) {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.3s ease;
+}
+
+a:not(.btn):not(.social-icon):not(.nav-link):hover,
+a:not(.btn):not(.social-icon):not(.nav-link):focus {
+  text-decoration-color: currentColor;
+}
+
+/* 改进的表单标签关联 */
+label {
+  cursor: pointer;
+}
+
+/* 工具提示无障碍样式 */
+[aria-describedby] {
+  position: relative;
+}
+
+/* 状态指示器 */
+.status-indicator {
+  position: relative;
+}
+
+.status-indicator::before {
+  content: attr(data-status);
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.status-indicator:hover::before,
+.status-indicator:focus::before {
+  opacity: 1;
+}
+
+/* 波纹效果动画 */
+@keyframes ripple-effect {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* 移动设备特定样式 */
+.mobile-device .particle {
+  display: none !important;
+}
+
+.mobile-device .wave-animation {
+  animation-duration: 4s;
+}
+
+/* 平板布局 */
+.tablet-layout .container {
+  max-width: 90%;
+}
+
+/* 桌面布局 */
+.desktop-layout .container {
+  max-width: 1200px;
+}
+
+/* 音效切换按钮动画 */
+#audio-toggle {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+#audio-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px -5px rgba(59, 130, 246, 0.5);
+}
+
+#audio-toggle:active {
+  transform: scale(0.95);
+}
+
+/* 键盘导航时的音效按钮样式 */
+.keyboard-navigation #audio-toggle:focus {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* 增强的微交互反馈 */
+.btn,
+button {
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.btn:active,
+button:active {
+  transform: scale(0.95);
+}
+
+/* 庆祝动画增强 */
+.celebration-particle {
+  animation: celebrate-particle 1s ease-out forwards;
+}
+
+@keyframes celebrate-particle {
+  0% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(360deg);
+  }
+}
+
+/* 内容管理系统样式 */
+#edit-toggle {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+#edit-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px -5px rgba(139, 92, 246, 0.5);
+}
+
+#edit-toggle:active {
+  transform: scale(0.95);
+}
+
+/* 编辑模式样式 */
+.edit-mode [data-editable] {
+  transition: all 0.3s ease;
+}
+
+.edit-mode [data-editable]:hover {
+  background-color: rgba(139, 92, 246, 0.05);
+}
+
+.editable-active {
+  position: relative !important;
+}
+
+.editable-active:focus {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}
+
+.edit-hint {
+  animation: fade-in-hint 0.3s ease-out;
+}
+
+@keyframes fade-in-hint {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 保存通知动画 */
+.save-notification {
+  animation: slide-in-notification 0.3s ease-out;
+}
+
+@keyframes slide-in-notification {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 编辑模式下的特殊样式 */
+.edit-mode::before {
+  content: '编辑模式已启用 - 点击文本即可编辑';
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(139, 92, 246, 0.9);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  z-index: 1000;
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 5px rgba(139, 92, 246, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.8);
   }
 }
