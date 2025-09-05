@@ -2150,8 +2150,26 @@ class AIExplorerApp {
     }
   }
 
+  hideLoadingScreen() {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+      // 使用GSAP动画隐藏加载屏幕
+      gsap.to(loadingScreen, {
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.out",
+        onComplete: () => {
+          loadingScreen.style.display = 'none';
+        }
+      });
+    }
+  }
+
   initializeApp() {
     try {
+      // 隐藏加载屏幕
+      this.hideLoadingScreen();
+      
       // 初始化性能监控和缓存管理
       PerformanceManager.init();
       CacheManager.init();
