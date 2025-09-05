@@ -13,22 +13,72 @@ const CONFIG = {
 const AnimationManager = {
   // 初始化GSAP
   init() {
-    // 注册GSAP插件
-    gsap.registerPlugin(ScrollTrigger, TextPlugin);
-    
-    // 设置默认动画配置
-    gsap.defaults({
-      duration: 0.8,
-      ease: "power2.out"
-    });
+    try {
+      // 检查GSAP是否可用
+      if (typeof gsap === 'undefined') {
+        console.warn('GSAP库未加载，使用CSS动画备用方案');
+        this.initCSSFallback();
+        return;
+      }
 
-    // 初始化各种动画
-    this.initPageTransitions();
-    this.initScrollAnimations();
-    this.initTextAnimations();
-    this.initParallaxEffects();
-    this.initHoverAnimations();
-    this.initLoadingAnimations();
+      // 注册GSAP插件
+      gsap.registerPlugin(ScrollTrigger, TextPlugin);
+      
+      // 设置默认动画配置
+      gsap.defaults({
+        duration: 0.8,
+        ease: "power2.out"
+      });
+
+      // 初始化各种动画
+      this.initPageTransitions();
+      this.initScrollAnimations();
+      this.initTextAnimations();
+      this.initParallaxEffects();
+      this.initHoverAnimations();
+      this.initLoadingAnimations();
+    } catch (error) {
+      console.error('GSAP初始化失败:', error);
+      this.initCSSFallback();
+    }
+  },
+
+  // CSS备用方案
+  initCSSFallback() {
+    // 隐藏加载屏幕的备用方法
+    setTimeout(() => {
+      const loadingScreen = document.getElementById('loading-screen');
+      if (loadingScreen) {
+        loadingScreen.style.transition = 'opacity 0.5s ease-out';
+        loadingScreen.style.opacity = '0';
+        setTimeout(() => {
+          loadingScreen.style.display = 'none';
+        }, 500);
+      }
+    }, 1000);
+
+    // 基本的滚动动画备用方案
+    this.initBasicScrollAnimations();
+  },
+
+  // 基本滚动动画（不依赖GSAP）
+  initBasicScrollAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    const animatedElements = document.querySelectorAll('.animate-on-scroll');
+    animatedElements.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'all 0.6s ease-out';
+      observer.observe(el);
+    });
   },
 
   // 页面转场动画
@@ -2153,44 +2203,59 @@ class AIExplorerApp {
   hideLoadingScreen() {
     const loadingScreen = document.getElementById('loading-screen');
     if (loadingScreen) {
-      // 使用GSAP动画隐藏加载屏幕
-      gsap.to(loadingScreen, {
-        opacity: 0,
-        duration: 0.5,
-        ease: "power2.out",
-        onComplete: () => {
-          loadingScreen.style.display = 'none';
+      try {
+        // 优先使用GSAP动画隐藏加载屏幕
+        if (typeof gsap !== 'undefined') {
+          gsap.to(loadingScreen, {
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            onComplete: () => {
+              loadingScreen.style.display = 'none';
+            }
+          });
+        } else {
+          // GSAP不可用时使用CSS过渡
+          loadingScreen.style.transition = 'opacity 0.5s ease-out';
+          loadingScreen.style.opacity = '0';
+          setTimeout(() => {
+            loadingScreen.style.display = 'none';
+          }, 500);
         }
-      });
+      } catch (error) {
+        console.error('隐藏加载屏幕失败，使用强制隐藏:', error);
+        // 最后的备用方案：直接隐藏
+        loadingScreen.style.display = 'none';
+      }
     }
   }
 
   initializeApp() {
     try {
-      // 隐藏加载屏幕
+      // 确保加载屏幕被隐藏
       this.hideLoadingScreen();
       
       // 初始化性能监控和缓存管理
-      PerformanceManager.init();
-      CacheManager.init();
-      AccessibilityManager.init();
-      AudioManager.init();
-      AnimationManager.init();
-      ContentManager.init();
+      this.initSafely('PerformanceManager', PerformanceManager);
+      this.initSafely('CacheManager', CacheManager);
+      this.initSafely('AccessibilityManager', AccessibilityManager);
+      this.initSafely('AudioManager', AudioManager);
+      this.initSafely('AnimationManager', AnimationManager);
+      this.initSafely('ContentManager', ContentManager);
       
       // 初始化各个模块
-      LoadingManager.init();
-      ThemeManager.init();
-      NavigationManager.init();
-      ScrollAnimationManager.init();
-      ModalManager.init();
-      FormManager.init();
-      GameManager.init();
-      GuestbookManager.init();
+      this.initSafely('LoadingManager', LoadingManager);
+      this.initSafely('ThemeManager', ThemeManager);
+      this.initSafely('NavigationManager', NavigationManager);
+      this.initSafely('ScrollAnimationManager', ScrollAnimationManager);
+      this.initSafely('ModalManager', ModalManager);
+      this.initSafely('FormManager', FormManager);
+      this.initSafely('GameManager', GameManager);
+      this.initSafely('GuestbookManager', GuestbookManager);
       
       // 延迟初始化粒子效果
       setTimeout(() => {
-        ParticleManager.init();
+        this.initSafely('ParticleManager', ParticleManager);
       }, 1000);
       
       // 绑定全局事件
@@ -2200,6 +2265,27 @@ class AIExplorerApp {
       
     } catch (error) {
       console.error('❌ 初始化失败:', error);
+      // 确保即使初始化失败，加载屏幕也被隐藏
+      this.forceHideLoadingScreen();
+    }
+  }
+
+  // 安全初始化管理器
+  initSafely(name, manager) {
+    try {
+      if (manager && typeof manager.init === 'function') {
+        manager.init();
+      }
+    } catch (error) {
+      console.warn(`${name} 初始化失败:`, error);
+    }
+  }
+
+  // 强制隐藏加载屏幕
+  forceHideLoadingScreen() {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+      loadingScreen.style.display = 'none';
     }
   }
 

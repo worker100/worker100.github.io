@@ -178,6 +178,49 @@
         </div>
     </div>
 
+    <!-- 备用加载屏幕隐藏脚本 -->
+    <script>
+        // 备用机制：确保加载屏幕在3秒后自动隐藏，即使主JavaScript失败
+        setTimeout(function() {
+            var loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen && loadingScreen.style.display !== 'none') {
+                loadingScreen.style.transition = 'opacity 0.5s ease-out';
+                loadingScreen.style.opacity = '0';
+                setTimeout(function() {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }
+        }, 3000);
+
+        // DOMContentLoaded 备用机制
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen && loadingScreen.style.display !== 'none') {
+                    loadingScreen.style.transition = 'opacity 0.5s ease-out';
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(function() {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }
+            }, 2000);
+        });
+
+        // 页面完全加载后的备用机制
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen && loadingScreen.style.display !== 'none') {
+                    loadingScreen.style.transition = 'opacity 0.5s ease-out';
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(function() {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }
+            }, 1500);
+        });
+    </script>
+
     <!-- 页面转场动画 -->
     <div id="page-transition" class="fixed inset-0 z-40 pointer-events-none">
         <div class="absolute inset-0 bg-gradient-to-br from-accent-blue to-accent-purple transform scale-x-0 origin-left transition-transform duration-700 ease-in-out"></div>
