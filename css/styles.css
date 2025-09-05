@@ -1030,3 +1030,270 @@ button:active {
     box-shadow: 0 0 20px rgba(139, 92, 246, 0.8);
   }
 }
+
+/* AI资讯区域特殊样式 */
+#ai-news {
+  position: relative;
+  overflow: hidden;
+}
+
+/* AI资讯背景动画 */
+#ai-news::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 40%, rgba(59, 130, 246, 0.03) 50%, transparent 60%);
+  animation: ai-news-bg-flow 15s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes ai-news-bg-flow {
+  0% {
+    transform: translateX(-100%) translateY(-100%);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%);
+  }
+}
+
+/* AI资讯卡片样式 */
+.ai-news-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ai-news-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(59, 130, 246, 0.05) 50%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.ai-news-card:hover::before {
+  opacity: 1;
+}
+
+.ai-news-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.25);
+}
+
+.dark .ai-news-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.4);
+}
+
+/* AI资讯标签样式 */
+.ai-news-card .category-tag {
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ai-news-card .category-tag::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: shine-effect 3s ease-in-out infinite;
+}
+
+@keyframes shine-effect {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* 实时更新指示器 */
+.update-indicator {
+  position: relative;
+}
+
+.update-indicator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+/* 加载状态动画 */
+.news-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.news-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+  animation: loading-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes loading-shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* AI资讯侧边栏样式 */
+#ai-news .space-y-6 > div {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+#ai-news .space-y-6 > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.dark #ai-news .space-y-6 > div:hover {
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* 热点列表动画 */
+.hot-news-list a {
+  position: relative;
+  transition: all 0.3s ease;
+  padding-left: 1rem;
+}
+
+.hot-news-list a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 3px;
+  height: 0;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border-radius: 2px;
+  transform: translateY(-50%);
+  transition: height 0.3s ease;
+}
+
+.hot-news-list a:hover::before {
+  height: 100%;
+}
+
+/* 数据来源指示器 */
+.data-source-indicator {
+  position: relative;
+  animation: gentle-pulse 3s ease-in-out infinite;
+}
+
+@keyframes gentle-pulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* 新闻卡片进入动画 */
+.ai-news-card-enter {
+  animation: news-card-slide-in 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes news-card-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 移动端AI资讯优化 */
+@media (max-width: 768px) {
+  .ai-news-card {
+    margin-bottom: 1rem;
+  }
+  
+  .ai-news-card:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
+  
+  #ai-news::before {
+    animation-duration: 10s;
+  }
+  
+  .ai-news-card .category-tag::before {
+    animation-duration: 2s;
+  }
+}
+
+/* 高对比度模式下的AI资讯样式 */
+@media (prefers-contrast: high) {
+  .ai-news-card {
+    border: 2px solid #fff;
+    background: #000;
+  }
+  
+  .ai-news-card .category-tag {
+    border: 2px solid #fff;
+    background: #000;
+    color: #fff;
+  }
+}
+
+/* 减少动画模式下的优化 */
+@media (prefers-reduced-motion: reduce) {
+  #ai-news::before {
+    animation: none;
+  }
+  
+  .ai-news-card .category-tag::before {
+    animation: none;
+  }
+  
+  .update-indicator::before {
+    animation: none;
+  }
+  
+  .news-loading::after {
+    animation: none;
+  }
+  
+  .data-source-indicator {
+    animation: none;
+  }
+}

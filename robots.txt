@@ -1,0 +1,35 @@
+# AI探索者网站 - Robots.txt
+# 允许所有搜索引擎爬虫访问
+
+User-agent: *
+Allow: /
+
+# 特定页面优先级设置
+Allow: /index.html
+Allow: /css/
+Allow: /js/
+Allow: /images/
+
+# 不允许访问的目录和文件
+Disallow: /sw.js
+Disallow: /*.json$
+Disallow: /assets/
+
+# 网站地图位置
+Sitemap: https://worker100.github.io/sitemap.xml
+
+# 爬取延迟设置（可选）
+Crawl-delay: 1
+
+# 针对特定搜索引擎的设置
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2

@@ -10,20 +10,91 @@
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://your-website-url.com/">
+    <meta property="og:url" content="https://worker100.github.io/">
     <meta property="og:title" content="AI探索者 - 用AI重塑创意边界">
-    <meta property="og:description" content="探索人工智能的无限可能，分享工具、教程与实战案例">
-    <meta property="og:image" content="https://your-website-url.com/favicon.ico">
+    <meta property="og:description" content="探索人工智能的无限可能，分享工具、教程与实战案例。包含AI项目展示、技术博客、互动小游戏和个人成长记录。">
+    <meta property="og:image" content="https://worker100.github.io/images/profile/profile.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:site_name" content="AI探索者">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://your-website-url.com/">
+    <meta property="twitter:url" content="https://worker100.github.io/">
     <meta property="twitter:title" content="AI探索者 - 用AI重塑创意边界">
-    <meta property="twitter:description" content="探索人工智能的无限可能，分享工具、教程与实战案例">
-    <meta property="twitter:image" content="https://your-website-url.com/favicon.ico">
+    <meta property="twitter:description" content="探索人工智能的无限可能，分享工具、教程与实战案例。包含AI项目展示、技术博客、互动小游戏和个人成长记录。">
+    <meta property="twitter:image" content="https://worker100.github.io/images/profile/profile.png">
+    <meta property="twitter:creator" content="@AIExplorer">
     
-    <!-- Favicon -->
+    <!-- 额外的SEO标签 -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="AI探索者">
+    <meta name="application-name" content="AI探索者">
+    <meta name="msapplication-TileColor" content="#3b82f6">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Bruce",
+      "jobTitle": "AI开发者 & 创意探索者",
+      "description": "专注于AI技术的全栈开发者，致力于探索人工智能在创意领域的无限可能",
+      "url": "https://worker100.github.io",
+      "image": "https://worker100.github.io/images/profile/profile.png",
+      "sameAs": [
+        "https://github.com/worker100",
+        "https://twitter.com/AIExplorer"
+      ],
+      "knowsAbout": [
+        "人工智能",
+        "机器学习",
+        "前端开发",
+        "Python",
+        "JavaScript",
+        "UI/UX设计"
+      ],
+      "alumniOf": {
+        "@type": "Organization",
+        "name": "技术学院"
+      }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "AI探索者",
+      "description": "探索人工智能的无限可能，分享工具、教程与实战案例",
+      "url": "https://worker100.github.io",
+      "author": {
+        "@type": "Person",
+        "name": "Bruce"
+      },
+      "inLanguage": "zh-CN",
+      "copyrightYear": "2025",
+      "genre": ["技术", "AI", "教育", "博客"],
+      "keywords": "AI,人工智能,机器学习,前端开发,个人网站,技术博客,创意设计",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://worker100.github.io/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    
+    <!-- Favicon和PWA支持 -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/profile/profile.png">
+    <link rel="canonical" href="https://worker100.github.io/">
     
     <!-- TailwindCSS 3.4 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -36,6 +107,11 @@
     
     <!-- 自定义样式 -->
     <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- GSAP动画库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
     
     <!-- TailwindCSS 配置 -->
     <script>
@@ -102,6 +178,11 @@
         </div>
     </div>
 
+    <!-- 页面转场动画 -->
+    <div id="page-transition" class="fixed inset-0 z-40 pointer-events-none">
+        <div class="absolute inset-0 bg-gradient-to-br from-accent-blue to-accent-purple transform scale-x-0 origin-left transition-transform duration-700 ease-in-out"></div>
+    </div>
+
     <!-- 导航栏 -->
     <nav class="fixed top-0 left-0 right-0 z-40 bg-light-primary/80 dark:bg-dark-primary/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -118,6 +199,7 @@
                     <div class="ml-10 flex items-baseline space-x-8">
                         <a href="#home" class="nav-link text-light-text dark:text-dark-text hover:text-accent-blue dark:hover:text-accent-blue transition-colors duration-300 px-3 py-2 text-sm font-medium">首页</a>
                         <a href="#projects" class="nav-link text-light-text dark:text-dark-text hover:text-accent-blue dark:hover:text-accent-blue transition-colors duration-300 px-3 py-2 text-sm font-medium">作品集</a>
+                        <a href="#ai-news" class="nav-link text-light-text dark:text-dark-text hover:text-accent-blue dark:hover:text-accent-blue transition-colors duration-300 px-3 py-2 text-sm font-medium">AI资讯</a>
                         <a href="#games" class="nav-link text-light-text dark:text-dark-text hover:text-accent-blue dark:hover:text-accent-blue transition-colors duration-300 px-3 py-2 text-sm font-medium">小游戏</a>
                         <a href="#xiaohongshu" class="nav-link text-light-text dark:text-dark-text hover:text-accent-blue dark:hover:text-accent-blue transition-colors duration-300 px-3 py-2 text-sm font-medium">小红书</a>
                         <a href="#blog" class="nav-link text-light-text dark:text-dark-text hover:text-accent-blue dark:hover:text-accent-blue transition-colors duration-300 px-3 py-2 text-sm font-medium">博客</a>
@@ -154,6 +236,7 @@
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#home" class="mobile-nav-link block px-3 py-2 text-base font-medium text-light-text dark:text-dark-text hover:text-accent-blue dark:hover:text-accent-blue transition-colors duration-300">首页</a>
                 <a href="#projects" class="mobile-nav-link block px-3 py-2 text-base font-medium text-light-text dark:text-dark-text hover:text-accent-blue dark:hover:text-accent-blue transition-colors duration-300">作品集</a>
+                <a href="#ai-news" class="mobile-nav-link block px-3 py-2 text-base font-medium text-light-text dark:text-dark-text hover:text-accent-blue dark:hover:text-accent-blue transition-colors duration-300">AI资讯</a>
                 <a href="#games" class="mobile-nav-link block px-3 py-2 text-base font-medium text-light-text dark:text-dark-text hover:text-accent-blue dark:hover:text-accent-blue transition-colors duration-300">小游戏</a>
                 <a href="#xiaohongshu" class="mobile-nav-link block px-3 py-2 text-base font-medium text-light-text dark:text-dark-text hover:text-accent-blue dark:hover:text-accent-blue transition-colors duration-300">小红书</a>
                 <a href="#blog" class="mobile-nav-link block px-3 py-2 text-base font-medium text-light-text dark:text-dark-text hover:text-accent-blue dark:hover:text-accent-blue transition-colors duration-300">博客</a>
@@ -165,35 +248,35 @@
     </nav>
 
     <!-- Hero区域 -->
-    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
+    <section id="home" class="animate-on-scroll min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
         <!-- 背景效果 -->
-        <div id="particles-container" class="absolute inset-0 z-0"></div>
+        <div id="particles-container" class="parallax-bg absolute inset-0 z-0"></div>
         <div class="absolute inset-0 bg-gradient-to-br from-accent-blue/10 to-accent-purple/10 dark:from-accent-blue/5 dark:to-accent-purple/5"></div>
         
         <!-- Hero内容 -->
         <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 animate-float">
+            <h1 class="typewriter-text text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 animate-float">
                 <span class="bg-gradient-to-r from-accent-blue to-accent-purple bg-clip-text text-transparent">
                     用AI重塑创意边界
                 </span>
             </h1>
-            <p class="text-xl sm:text-2xl text-light-text-secondary dark:text-dark-text-secondary mb-8 leading-relaxed">
+            <p class="text-reveal text-xl sm:text-2xl text-light-text-secondary dark:text-dark-text-secondary mb-8 leading-relaxed">
                 探索人工智能的无限可能，分享工具、教程与实战案例
             </p>
             
             <!-- CTA按钮 -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button id="view-projects-btn" class="px-8 py-3 bg-gradient-to-r from-accent-blue to-accent-purple text-white rounded-full font-medium hover:shadow-lg hover:shadow-accent-blue/25 transform hover:-translate-y-1 transition-all duration-300 animate-glow">
+            <div class="animate-on-scroll flex flex-col sm:flex-row gap-4 justify-center">
+                <button id="view-projects-btn" class="hover-button px-8 py-3 bg-gradient-to-r from-accent-blue to-accent-purple text-white rounded-full font-medium hover:shadow-lg hover:shadow-accent-blue/25 transform hover:-translate-y-1 transition-all duration-300 animate-glow">
                     查看作品
                 </button>
-                <button id="subscribe-btn" class="px-8 py-3 border-2 border-accent-blue text-accent-blue hover:bg-accent-blue hover:text-white rounded-full font-medium transform hover:-translate-y-1 transition-all duration-300">
+                <button id="subscribe-btn" class="hover-button px-8 py-3 border-2 border-accent-blue text-accent-blue hover:bg-accent-blue hover:text-white rounded-full font-medium transform hover:-translate-y-1 transition-all duration-300">
                     订阅博客
                 </button>
             </div>
         </div>
         
         <!-- 滚动指示器 -->
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div class="floating-element absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
             <svg class="w-6 h-6 text-light-text-secondary dark:text-dark-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
             </svg>
@@ -213,7 +296,7 @@
             <!-- 项目网格 -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- 项目卡片1 -->
-                <div class="project-card bg-light-primary dark:bg-dark-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="hover-card animate-on-scroll project-card bg-light-primary dark:bg-dark-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
                     <div class="aspect-video overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=500&fit=crop" 
                              alt="AI绘画助手" 
@@ -240,7 +323,7 @@
                 </div>
                 
                 <!-- 项目卡片2 -->
-                <div class="project-card bg-light-primary dark:bg-dark-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="hover-card animate-on-scroll project-card bg-light-primary dark:bg-dark-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
                     <div class="aspect-video overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=500&fit=crop" 
                              alt="智能聊天机器人" 
@@ -267,7 +350,7 @@
                 </div>
                 
                 <!-- 项目卡片3 -->
-                <div class="project-card bg-light-primary dark:bg-dark-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="hover-card animate-on-scroll project-card bg-light-primary dark:bg-dark-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
                     <div class="aspect-video overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=500&fit=crop" 
                              alt="数据可视化平台" 
@@ -309,7 +392,7 @@
             <!-- 游戏网格 -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- 猜数字游戏 -->
-                <div class="game-card bg-light-secondary dark:bg-dark-secondary rounded-2xl p-6 hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="hover-card animate-on-scroll game-card bg-light-secondary dark:bg-dark-secondary rounded-2xl p-6 hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
                     <div class="text-center mb-6">
                         <!-- 数字图标 SVG -->
                         <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
@@ -342,7 +425,7 @@
                 </div>
                 
                 <!-- 石头剪刀布游戏 -->
-                <div class="game-card bg-light-secondary dark:bg-dark-secondary rounded-2xl p-6 hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="hover-card animate-on-scroll game-card bg-light-secondary dark:bg-dark-secondary rounded-2xl p-6 hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
                     <div class="text-center mb-6">
                         <!-- 手势图标 SVG -->
                         <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
@@ -548,6 +631,290 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                             </svg>
                         </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI资讯区域 -->
+    <section id="ai-news" class="py-20 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-light-text dark:text-dark-text">
+                    <span class="bg-gradient-to-r from-accent-blue to-accent-purple bg-clip-text text-transparent">
+                        最新AI资讯
+                    </span>
+                </h2>
+                <p class="text-lg text-light-text-secondary dark:text-dark-text-secondary max-w-2xl mx-auto">
+                    实时追踪全球AI技术动态，掌握前沿科技趋势
+                </p>
+                <div class="flex justify-center items-center mt-4 text-sm text-light-text-secondary dark:text-dark-text-secondary">
+                    <svg class="w-4 h-4 mr-2 text-green-500 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                    <span>每日自动更新 | 最后更新: <span id="last-update-time">2025-09-05 14:30</span></span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- 热门资讯卡片 -->
+                <div class="lg:col-span-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- 资讯卡片1 - 微软CEO纳德拉AI提示词 -->
+                        <article class="ai-news-card bg-light-primary dark:bg-dark-primary rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border-l-4 border-blue-500">
+                            <div class="flex items-start justify-between mb-4">
+                                <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-xs font-medium">
+                                    🔥 热门
+                                </span>
+                                <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                                    今日 9:26
+                                </span>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-3 text-light-text dark:text-dark-text hover:text-accent-blue transition-colors duration-300 cursor-pointer line-clamp-2">
+                                微软CEO纳德拉亲授：用5个AI提示词，让GPT-5重塑高管工作效率
+                            </h3>
+                            <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4 line-clamp-3">
+                                微软CEO萨提亚·纳德拉公开了5个驱动其日常工作的ChatGPT提示词，详细展示了GPT-5与Microsoft Copilot如何深度融入其日常管理工作中...
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2 text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">微软</span>
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">GPT-5</span>
+                                </div>
+                                <a href="https://www.ithome.com/0/880/574.htm" target="_blank" class="text-accent-blue hover:text-accent-purple transition-colors duration-300 text-sm">
+                                    阅读全文 →
+                                </a>
+                            </div>
+                        </article>
+
+                        <!-- 资讯卡片2 - 宏碁AI超算设备 -->
+                        <article class="ai-news-card bg-light-primary dark:bg-dark-primary rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border-l-4 border-green-500">
+                            <div class="flex items-start justify-between mb-4">
+                                <span class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 rounded-full text-xs font-medium">
+                                    💻 硬件
+                                </span>
+                                <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                                    09月04日
+                                </span>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-3 text-light-text dark:text-dark-text hover:text-accent-blue transition-colors duration-300 cursor-pointer line-clamp-2">
+                                宏碁发布Veriton GN100 AI超算设备：GB10超级芯片，起售价3999美元
+                            </h3>
+                            <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4 line-clamp-3">
+                                宏碁发布了基于英伟达Project Digits架构的Veriton GN100 AI迷你工作站，配备GB10超级芯片、128GB LPDDR5x内存...
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2 text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">宏碁</span>
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">英伟达</span>
+                                </div>
+                                <a href="https://www.ithome.com/0/880/367.htm" target="_blank" class="text-accent-blue hover:text-accent-purple transition-colors duration-300 text-sm">
+                                    阅读全文 →
+                                </a>
+                            </div>
+                        </article>
+
+                        <!-- 资讯卡片3 - 苹果Siri AI搜索 -->
+                        <article class="ai-news-card bg-light-primary dark:bg-dark-primary rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border-l-4 border-purple-500">
+                            <div class="flex items-start justify-between mb-4">
+                                <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 rounded-full text-xs font-medium">
+                                    🍎 苹果
+                                </span>
+                                <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                                    09月04日
+                                </span>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-3 text-light-text dark:text-dark-text hover:text-accent-blue transition-colors duration-300 cursor-pointer line-clamp-2">
+                                苹果2026年推Siri AI搜索：3大模块设计，平衡本地与云端计算
+                            </h3>
+                            <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4 line-clamp-3">
+                                预估2026年年初发布的iOS 26.4更新中，苹果计划为Siri推出基于自研Apple Foundation Model模型的AI网页搜索功能...
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2 text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">Siri</span>
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">搜索</span>
+                                </div>
+                                <a href="https://www.ithome.com/0/880/235.htm" target="_blank" class="text-accent-blue hover:text-accent-purple transition-colors duration-300 text-sm">
+                                    阅读全文 →
+                                </a>
+                            </div>
+                        </article>
+
+                        <!-- 资讯卡片4 - AI抢人类饭碗 -->
+                        <article class="ai-news-card bg-light-primary dark:bg-dark-primary rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border-l-4 border-red-500">
+                            <div class="flex items-start justify-between mb-4">
+                                <span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300 rounded-full text-xs font-medium">
+                                    ⚠️ 影响
+                                </span>
+                                <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                                    09月03日
+                                </span>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-3 text-light-text dark:text-dark-text hover:text-accent-blue transition-colors duration-300 cursor-pointer line-clamp-2">
+                                AI抢人类饭碗：Salesforce CEO证实公司裁掉了4000个客服
+                            </h3>
+                            <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4 line-clamp-3">
+                                Salesforce CEO马克·贝尼奥夫透露，AI已取代4000个客户支持岗位，机器人客服团队"Agentforce"上岗...
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2 text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">Salesforce</span>
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">就业</span>
+                                </div>
+                                <a href="https://www.ithome.com/0/880/189.htm" target="_blank" class="text-accent-blue hover:text-accent-purple transition-colors duration-300 text-sm">
+                                    阅读全文 →
+                                </a>
+                            </div>
+                        </article>
+
+                        <!-- 资讯卡片5 - GPT-5玩狼人杀 -->
+                        <article class="ai-news-card bg-light-primary dark:bg-dark-primary rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border-l-4 border-yellow-500">
+                            <div class="flex items-start justify-between mb-4">
+                                <span class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300 rounded-full text-xs font-medium">
+                                    🎮 有趣
+                                </span>
+                                <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                                    09月03日
+                                </span>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-3 text-light-text dark:text-dark-text hover:text-accent-blue transition-colors duration-300 cursor-pointer line-clamp-2">
+                                7个AI玩狼人杀：GPT-5获断崖式MVP，Kimi手段激进
+                            </h3>
+                            <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4 line-clamp-3">
+                                OpenAI的总裁格雷格·布罗克曼转发了这样的一个基准测试：让7个强大的LLMs，包括开源和闭源，玩了210场完整的狼人杀...
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2 text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">OpenAI</span>
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">测试</span>
+                                </div>
+                                <a href="https://www.ithome.com/0/880/181.htm" target="_blank" class="text-accent-blue hover:text-accent-purple transition-colors duration-300 text-sm">
+                                    阅读全文 →
+                                </a>
+                            </div>
+                        </article>
+
+                        <!-- 资讯卡片6 - 苹果FastVLM模型 -->
+                        <article class="ai-news-card bg-light-primary dark:bg-dark-primary rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border-l-4 border-indigo-500">
+                            <div class="flex items-start justify-between mb-4">
+                                <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 rounded-full text-xs font-medium">
+                                    🚀 模型
+                                </span>
+                                <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                                    09月02日
+                                </span>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-3 text-light-text dark:text-dark-text hover:text-accent-blue transition-colors duration-300 cursor-pointer line-clamp-2">
+                                苹果FastVLM模型开放试用：Mac用户秒享"闪电级"视频字幕，比同类AI快85倍
+                            </h3>
+                            <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4 line-clamp-3">
+                                苹果公司在Hugging Face平台上，推出了FastVLM视觉语言模型的浏览器试用版，生成速度较同类AI快85倍...
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2 text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">苹果</span>
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">视频</span>
+                                </div>
+                                <a href="https://www.ithome.com/0/879/714.htm" target="_blank" class="text-accent-blue hover:text-accent-purple transition-colors duration-300 text-sm">
+                                    阅读全文 →
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                    
+                    <!-- 查看更多按钮 -->
+                    <div class="text-center mt-8">
+                        <button id="load-more-news" class="px-8 py-3 bg-gradient-to-r from-accent-blue to-accent-purple text-white rounded-full font-medium hover:shadow-lg hover:shadow-accent-blue/25 transform hover:-translate-y-1 transition-all duration-300">
+                            加载更多资讯
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 侧边栏 - 快速导航和统计 -->
+                <div class="space-y-6">
+                    <!-- 今日热点 -->
+                    <div class="bg-light-primary dark:bg-dark-primary rounded-2xl p-6 shadow-lg">
+                        <h3 class="text-lg font-semibold mb-4 text-light-text dark:text-dark-text flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            今日热点
+                        </h3>
+                        <div class="space-y-3">
+                            <a href="#" class="block text-sm text-light-text dark:text-dark-text hover:text-accent-blue transition-colors duration-300">
+                                1. 微软CEO公开GPT-5提示词技巧
+                            </a>
+                            <a href="#" class="block text-sm text-light-text dark:text-dark-text hover:text-accent-blue transition-colors duration-300">
+                                2. 宏碁推出AI超算工作站
+                            </a>
+                            <a href="#" class="block text-sm text-light-text dark:text-dark-text hover:text-accent-blue transition-colors duration-300">
+                                3. 苹果2026年Siri AI搜索计划
+                            </a>
+                            <a href="#" class="block text-sm text-light-text dark:text-dark-text hover:text-accent-blue transition-colors duration-300">
+                                4. Salesforce用AI替代4000客服
+                            </a>
+                            <a href="#" class="block text-sm text-light-text dark:text-dark-text hover:text-accent-blue transition-colors duration-300">
+                                5. GPT-5狼人杀测试结果公布
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 分类统计 -->
+                    <div class="bg-light-primary dark:bg-dark-primary rounded-2xl p-6 shadow-lg">
+                        <h3 class="text-lg font-semibold mb-4 text-light-text dark:text-dark-text flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            资讯分类
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-light-text dark:text-dark-text">模型发布</span>
+                                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded text-xs">15</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-light-text dark:text-dark-text">硬件设备</span>
+                                <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 rounded text-xs">8</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-light-text dark:text-dark-text">行业动态</span>
+                                <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 rounded text-xs">12</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-light-text dark:text-dark-text">研究报告</span>
+                                <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300 rounded text-xs">6</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 数据来源 -->
+                    <div class="bg-light-primary dark:bg-dark-primary rounded-2xl p-6 shadow-lg">
+                        <h3 class="text-lg font-semibold mb-4 text-light-text dark:text-dark-text flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            数据来源
+                        </h3>
+                        <div class="space-y-2 text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                            <div class="flex items-center">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                <span>IT之家 - 实时更新</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                                <span>TechCrunch - 全球资讯</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+                                <span>36氪 - 科技前沿</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
+                                <span>机器之心 - 深度解析</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -895,6 +1262,30 @@
         </div>
     </section>
 
+    <!-- 统计数据区域 -->
+    <section class="py-16 bg-gradient-to-r from-accent-blue to-accent-purple">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
+                <div class="animate-on-scroll">
+                    <div class="counter text-4xl md:text-5xl font-bold mb-2" data-target="50">0</div>
+                    <div class="text-sm md:text-base opacity-90">完成项目</div>
+                </div>
+                <div class="animate-on-scroll">
+                    <div class="counter text-4xl md:text-5xl font-bold mb-2" data-target="1200">0</div>
+                    <div class="text-sm md:text-base opacity-90">代码提交</div>
+                </div>
+                <div class="animate-on-scroll">
+                    <div class="counter text-4xl md:text-5xl font-bold mb-2" data-target="25">0</div>
+                    <div class="text-sm md:text-base opacity-90">技术博客</div>
+                </div>
+                <div class="animate-on-scroll">
+                    <div class="counter text-4xl md:text-5xl font-bold mb-2" data-target="5">0</div>
+                    <div class="text-sm md:text-base opacity-90">开发经验</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- 关于我区域 -->
     <section id="about" class="py-20 bg-light-secondary dark:bg-dark-secondary">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -951,8 +1342,8 @@
                             <span class="text-sm font-medium text-light-text dark:text-dark-text">Python / AI开发</span>
                             <span class="text-sm text-light-text-secondary dark:text-dark-text-secondary">90%</span>
                         </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="skill-bar bg-gradient-to-r from-accent-blue to-accent-purple h-2 rounded-full" style="width: 0%" data-width="90"></div>
+                        <div class="skill-bar w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2" data-progress="90%">
+                            <div class="skill-progress bg-gradient-to-r from-accent-blue to-accent-purple h-2 rounded-full" style="width: 0%"></div>
                         </div>
                     </div>
                     
@@ -962,8 +1353,8 @@
                             <span class="text-sm font-medium text-light-text dark:text-dark-text">前端开发</span>
                             <span class="text-sm text-light-text-secondary dark:text-dark-text-secondary">80%</span>
                         </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="skill-bar bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full" style="width: 0%" data-width="80"></div>
+                        <div class="skill-bar w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2" data-progress="80%">
+                            <div class="skill-progress bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full" style="width: 0%"></div>
                         </div>
                     </div>
                     
@@ -973,8 +1364,8 @@
                             <span class="text-sm font-medium text-light-text dark:text-dark-text">UI/UX设计</span>
                             <span class="text-sm text-light-text-secondary dark:text-dark-text-secondary">70%</span>
                         </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="skill-bar bg-gradient-to-r from-purple-400 to-pink-500 h-2 rounded-full" style="width: 0%" data-width="70"></div>
+                        <div class="skill-bar w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2" data-progress="70%">
+                            <div class="skill-progress bg-gradient-to-r from-purple-400 to-pink-500 h-2 rounded-full" style="width: 0%"></div>
                         </div>
                     </div>
                     
@@ -984,8 +1375,8 @@
                             <span class="text-sm font-medium text-light-text dark:text-dark-text">数据分析</span>
                             <span class="text-sm text-light-text-secondary dark:text-dark-text-secondary">75%</span>
                         </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="skill-bar bg-gradient-to-r from-yellow-400 to-red-500 h-2 rounded-full" style="width: 0%" data-width="75"></div>
+                        <div class="skill-bar w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2" data-progress="75%">
+                            <div class="skill-progress bg-gradient-to-r from-yellow-400 to-red-500 h-2 rounded-full" style="width: 0%"></div>
                         </div>
                     </div>
                 </div>
@@ -1127,6 +1518,7 @@
     </div>
 
     <!-- JavaScript -->
+    <script src="js/ai-news-updater.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
